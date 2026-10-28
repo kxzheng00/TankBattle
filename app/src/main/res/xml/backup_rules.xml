@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 包含所有共享偏好设置 -->
+    <include domain="sharedpref" path="" />
+    <!-- 包含所有数据库 -->
+    <include domain="database" path="" />
+    <!-- 包含所有内部文件 -->
+    <include domain="file" path="" />
+    <!-- 包含所有外部文件 -->
+    <include domain="external" path="" />
+</full-backup-content>

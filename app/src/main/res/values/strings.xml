@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">坦克大战</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="game_over">游戏结束</string>
+    <string name="restart">重新开始</string>
+    <string name="score">得分: %d</string>
+</resources>
