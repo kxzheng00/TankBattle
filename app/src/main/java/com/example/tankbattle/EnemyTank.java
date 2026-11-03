@@ -16,8 +16,6 @@ public class EnemyTank {
     private int width, height;
     private Rect rect;
     private Random random;
-    private long lastShootTime;
-    private static final long SHOOT_INTERVAL = 1500;
     private long lastDirectionChangeTime;
     private static final long DIRECTION_CHANGE_INTERVAL = 1000;
 
@@ -30,7 +28,6 @@ public class EnemyTank {
         this.height = 40;
         this.rect = new Rect((int) (x - width / 2), (int) (y - height / 2), 
                             (int) (x + width / 2), (int) (y + height / 2));
-        this.lastShootTime = System.currentTimeMillis();
         this.lastDirectionChangeTime = System.currentTimeMillis();
         // 随机初始方向
         changeDirection();
@@ -50,7 +47,10 @@ public class EnemyTank {
                 // 碰撞到墙壁，改变方向
                 x -= dx;
                 y -= dy;
+                rect.set((int) (x - width / 2), (int) (y - height / 2),
+                        (int) (x + width / 2), (int) (y + height / 2));
                 changeDirection();
+                lastDirectionChangeTime = System.currentTimeMillis();
                 break;
             }
         }
@@ -60,12 +60,6 @@ public class EnemyTank {
         if (currentTime - lastDirectionChangeTime > DIRECTION_CHANGE_INTERVAL) {
             changeDirection();
             lastDirectionChangeTime = currentTime;
-        }
-
-        // 定期射击
-        if (currentTime - lastShootTime > SHOOT_INTERVAL) {
-            shoot(playerTank);
-            lastShootTime = currentTime;
         }
     }
 
@@ -102,7 +96,7 @@ public class EnemyTank {
         // 计算子弹起始位置
         float bulletX = x + (float) Math.cos(Math.toRadians(shootAngle)) * (height);
         float bulletY = y + (float) Math.sin(Math.toRadians(shootAngle)) * (height);
-        return new Bullet(bulletX, bulletY, shootAngle);
+        return new Bullet(bulletX, bulletY, shootAngle, false);
     }
 
     public void draw(Canvas canvas, Paint paint) {

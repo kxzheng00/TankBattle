@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.util.List;
+
 public class PlayerTank {
     private float x, y;
     private float dx, dy;
@@ -24,11 +26,29 @@ public class PlayerTank {
                             (int) (x + width / 2), (int) (y + height / 2));
     }
 
-    public void update() {
-        // 更新位置
+    public void update(List<Wall> walls, int gameWidth, int gameHeight) {
+        float oldX = x;
+        float oldY = y;
         x += dx;
         y += dy;
-        // 更新碰撞矩形
+        float minX = width / 2f;
+        float minY = height / 2f;
+        float maxX = Math.max(minX, gameWidth - width / 2f);
+        float maxY = Math.max(minY, gameHeight - height / 2f);
+        x = Math.max(minX, Math.min(maxX, x));
+        y = Math.max(minY, Math.min(maxY, y));
+        updateRect();
+        for (Wall wall : walls) {
+            if (Rect.intersects(rect, wall.getRect())) {
+                x = oldX;
+                y = oldY;
+                updateRect();
+                break;
+            }
+        }
+    }
+
+    private void updateRect() {
         rect.set((int) (x - width / 2), (int) (y - height / 2), 
                 (int) (x + width / 2), (int) (y + height / 2));
     }
@@ -60,7 +80,7 @@ public class PlayerTank {
         // 计算子弹起始位置（炮管末端）
         float bulletX = x + (float) Math.cos(Math.toRadians(angle)) * (height);
         float bulletY = y + (float) Math.sin(Math.toRadians(angle)) * (height);
-        return new Bullet(bulletX, bulletY, angle);
+        return new Bullet(bulletX, bulletY, angle, true);
     }
 
     public Rect getRect() {

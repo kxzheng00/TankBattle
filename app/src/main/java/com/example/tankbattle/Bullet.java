@@ -11,12 +11,14 @@ public class Bullet {
     private float speed;
     private int radius;
     private Rect rect;
+    private final boolean playerBullet;
 
-    public Bullet(float x, float y, float angle) {
+    public Bullet(float x, float y, float angle, boolean playerBullet) {
         this.x = x;
         this.y = y;
         this.speed = 10;
         this.radius = 5;
+        this.playerBullet = playerBullet;
         // 计算速度分量
         this.dx = (float) Math.cos(Math.toRadians(angle)) * speed;
         this.dy = (float) Math.sin(Math.toRadians(angle)) * speed;
@@ -46,5 +48,9 @@ public class Bullet {
 
     public Rect getRect() {
         return rect;
+    }
+
+    public boolean isPlayerBullet() {
+        return playerBullet;
     }
 }
